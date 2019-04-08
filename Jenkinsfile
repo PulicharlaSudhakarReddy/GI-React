@@ -13,8 +13,8 @@ pipeline {
     stage('Docker Build and run') {
       agent any
       steps {
-        sh 'docker build -t shanem:latest .'
-        sh 'docker run -d -p 5000:5000 --name godrej shanem:latest'
+        sh 'docker build -t gi:latest .'
+        sh 'docker run -d -p 5000:5000  gi:latest'
       }
     }
   }
