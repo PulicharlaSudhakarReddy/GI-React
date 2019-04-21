@@ -1,22 +1,21 @@
 pipeline {
-  agent none
+  environment {
+    registry = "sudhakardvps/godrej_nodejs"
+    registryCredential = 'dockerhub'
+  }
+  agent any
   stages {
-    stage('dockerfile Install and test npm') {
-      agent {
-        dockerfile true
-      }
+    stage('Cloning Git') {
       steps {
-        sh 'npm --version'
-        sh 'node --version'
+        git 'https://github.com/gustavoapolinario/microservices-node-example-todo-frontend.git'
       }
     }
-    stage('Docker Build and run') {
-      agent any
-      steps {
-        sh 'docker build -t gi:latest .'
-        sh 'docker run -d -p 5000:5000  gi:latest'
+    stage('Building image') {
+      steps{
+        script {
+          docker.build registry + ":0.0.1"
+        }
       }
     }
   }
 }
-
