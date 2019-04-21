@@ -2,6 +2,7 @@ pipeline {
   environment {
     registry = "sudhakardvps/godrej_nodejs"
     registryCredential = 'dockerhub'
+    dockerImage = ''
   }
   agent any
   stages {
@@ -13,7 +14,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          docker.build registry + ":0.0.1"
+          dockerImage = docker.build registry + ":0.0.1"
         }
       }
     }
