@@ -1,35 +1,20 @@
 pipeline {
-  environment {
-    registry = "sudhakardvps/godrej_nodejs"
-    registryCredential = 'dockerhub'
-    dockerImage = ''
-  }
-  agent any
+  agent none
   stages {
-    stage('Cloning Git') {
+    stage('dockerfile Install and test npm') {
+      agent {
+        dockerfile true
+      }
       steps {
-        git 'https://github.com/PulicharlaSudhakarReddy/GI-React.git'
+        sh 'npm --version'
+        sh 'node --version'
       }
     }
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build registry + ":0.0.1"
-        }
-      }
-    }
-  stage('Deploy Image') {
-      steps{
-        script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
-          }
-        }
-      }
-    }
-    stage('Remove Unused docker image') {
-      steps{
-        sh "docker rmi $registry:0.0.1"
+    stage('Docker Build and run') {
+      agent any
+      steps {
+        sh 'docker build -t gi:latest .'
+        sh 'docker run -d -p 5000:5000  gi:latest'
       }
     }
   }
