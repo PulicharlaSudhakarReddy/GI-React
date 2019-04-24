@@ -1,4 +1,4 @@
-FROM node:10.15.3-alpine
+FROM node:10.15.3-stretch
 # To make it a non root user: chown -R node:node /home/node/app
 RUN mkdir -p /app/server
 WORKDIR /app/server
